@@ -1,0 +1,149 @@
+{% extends 'layout/base.html' %} 
+{% load static %} 
+{% block title %} Dokter {% endblock title %} 
+
+{% block css %}
+
+{% endblock css %}
+
+{% block navbar_link %}
+  Dokter
+{% endblock navbar_link %}
+
+{% block navbar_title %}
+ Daftar Dokter
+{% endblock navbar_title %}
+
+{% block content %}
+    <div>
+      <div>
+        <button type="button" class="btn btn-block bg-gradient-info mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-dokter">
+            <i class="material-icons opacity-10">add_circle_outline</i><span>Tambahkan Dokter</span></button>
+      </div>
+      <div>
+        <div class="modal fade" id="modal-form-dokter" tabindex="-1" role="dialog" aria-labelledby="modal-form-dokter" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-m" role="document">
+            <div class="modal-content">
+              <div class="modal-body p-0">
+                <div class="card card-plain">
+                  <div class="card-header pb-0 text-left">
+                    <h5 class="">Tambahkan Dokter Baru</h5>
+                    <p class="mb-0">Masukkan data dokter</p>
+                  </div>
+                  <div class="card-body">
+                  <!-- Form mrnambahkan pasien baru-->
+                    <form role="form text-left" method="POST" action="{% url 'dokter:add_dokter' %}" id="tambah_pasien">
+                      {% csrf_token %}
+                      <div class="input-group input-group-outline my-3">
+                        <label class="form-label">Kode Dokter</label>
+                        <input type="text" class="form-control" name="kode_dokter">
+                      </div>
+                      <div class="input-group input-group-outline my-3">
+                          <label class="form-label">Nama Dokter</label>
+                          <input type="text" class="form-control" name="nama_dokter">
+                      </div>
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Simpan</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="row">
+            <div class="col-12">
+              <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                  <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                    <h6 class="text-white text-capitalize ps-3">Daftar Dokter</h6>
+                  </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    {% if flag_null %}
+                    <div class="h5 text-center">
+                        Tidak ada data dokter.
+                    </div>
+                    {% else %}
+                  <div class="table-responsive p-0">
+                    <table id="pasienTable" class="table align-items-center mb-0 table-paginate" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Kode Dokter</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Dokter</th>
+                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Komisi Sudah Dibayar</th>
+                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Komisi Belum Dibayar</th>
+                          <th class="text-secondary opacity-7"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for dokter in doctors %}
+                        <tr class="text-center">
+                          <td class="text-center">
+                            <p class="text-xs font-weight-bold mb-0">{{dokter.kode_dokter}}</p>
+                          </td>
+                          <td class="text-center">
+                            <p class="text-xs font-weight-bold mb-0">{{dokter.nama}}</p>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0"><span>Rp. </span>{{dokter.komisi_sudah_dibayar}}</p>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0"><span>Rp. </span>{{dokter.komisi_belum_dibayar}}</p>
+                          </td>
+                          <td class="align-middle text-center">
+                            <!--
+                            <a href="{% url 'dokter:view_dokter' id=dokter.kode_dokter %}" class="btn btn-info font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                              lihat
+                            </a>-->
+                            <div>
+                              <button type="button" class="btn btn-block bg-gradient-secondary mb-3" data-bs-toggle="modal" data-bs-target="#modal-edit-{{dokter.kode_dokter}}">
+                                  <i class="material-icons opacity-10">edit</i><span> edit</span></button>
+                            </div>
+                            <!-- Modal untuk Edit-->
+                            <div class="modal fade" id="modal-edit-{{dokter.kode_dokter}}" tabindex="-1" role="dialog" aria-labelledby="modal-edit-{{dokter.kode_dokter}}" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered modal-m" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-body p-0">
+                                    <div class="card card-plain">
+                                      <div class="card-header pb-0 text-left">
+                                        <h5 class="">Edit Data Dokter</h5>
+                                        <p class="mb-0">Masukkan data dokter baru</p>
+                                      </div>
+                                      <div class="card-body">
+                                      <!-- Form mrnambahkan pasien baru-->
+                                        <form role="form text-left" method="POST" action="{% url 'dokter:edit_dokter' id=dokter.kode_dokter %}" id="edit_dokter">
+                                          {% csrf_token %}
+                                          <div class="input-group input-group-static my-3">
+                                            <label class="">Kode Dokter</label>
+                                            <input type="text" class="form-control" name="kode_dokter" value="{{dokter.kode_dokter}}">
+                                          </div>
+                                          <div class="input-group input-group-static my-3">
+                                              <label class="">Nama Dokter</label>
+                                              <input type="text" class="form-control" name="nama_dokter" value="{{dokter.nama}}">
+                                          </div>
+                                          <div class="text-center">
+                                            <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Edit</button>
+                                          </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+{% endblock content %}
