@@ -19,7 +19,7 @@ from .views import *
 app_name= 'uji_lab'
 urlpatterns = [
     path('', all_uji_lab, name='all_uji_lab'),
-    path('add/<str:id>', add_uji_lab, name='add_uji_lab'),
+    path('add/', add_uji_lab, name='add_uji_lab'),
     path('edit/<str:id>', edit_uji_lab, name='edit_uji_lab'),
     path('delete/<str:id>', delete_uji_lab, name='delete_uji_lab'),
     path('view/<str:id>', view_uji_lab, name='view_uji_lab'),

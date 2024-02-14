@@ -24,6 +24,9 @@ import uji_lab.urls
 import dokter.urls
 import tester.urls
 import pemeriksaan.urls
+import bidang.urls
+import uji_lab.urls
+import hasil_pemeriksaan.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,5 +38,8 @@ urlpatterns = [
     path('pemeriksaan/', include(pemeriksaan.urls)),
     path('dokter/', include(dokter.urls)),
     path('tester/', include(tester.urls)),
+    path('bidang/', include(bidang.urls)),
+    path('uji_lab/', include(uji_lab.urls)),
+    path('hasil_pemeriksaan/', include(hasil_pemeriksaan.urls)),
     
 ]

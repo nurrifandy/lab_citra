@@ -15,6 +15,7 @@
 {% endblock navbar_title %}
 
 {% block content %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <div>
       <div>
         <button type="button" class="btn btn-block bg-gradient-info mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-dokter">
@@ -30,18 +31,34 @@
                     <h5 class="">Tambahkan Dokter Baru</h5>
                     <p class="mb-0">Masukkan data dokter</p>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body m-0">
                   <!-- Form mrnambahkan pasien baru-->
-                    <form role="form text-left" method="POST" action="{% url 'dokter:add_dokter' %}" id="tambah_pasien">
+                    <form class="form text-left was-validated" method="POST" action="{% url 'dokter:add_dokter' %}" id="tambah_pasien">
                       {% csrf_token %}
-                      <div class="input-group input-group-outline my-3">
-                        <label class="form-label">Kode Dokter</label>
-                        <input type="text" class="form-control" name="kode_dokter">
+                      <div class="input-group input-group-dynamic mb-4">
+                        <input type="text" class="form-control" placeholder="Kode Dokter" id="ukode" aria-label="kode_dokter" name="kode_dokter" required>
+                        <div class="valid-feedback">Kode dokter berhasil dimasukkan!</div>
+                        <div class="invalid-feedback">Masukkan kode dokter di sini.</div>
                       </div>
-                      <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Nama Dokter</label>
-                          <input type="text" class="form-control" name="nama_dokter">
+                      <div class="input-group input-group-dynamic mb-4">
+                          <input type="text" id="uname" class="form-control" placeholder="Nama Dokter" aria-label="nama_dokter" name="nama_dokter" required>
+                          <div class="valid-feedback">Nama dokter berhasil dimasukkan!</div>
+                          <div class="invalid-feedback">Masukkan nama dokter di sini</div>
                       </div>
+                      <div class="input-group input-group-dynamic mb-4">
+                        <span class="input-group-text" id="basic-addon1">@</span>
+                        <input type="number" class="form-control" placeholder="Komisi Dokter" aria-label="komisi_dokter" name="komisi_dokter" aria-describedby="basic-addon1" required>
+                        <div class="valid-feedback">Komisi berhasil dimasukkan!</div>
+                        <div class="invalid-feedback">Masukkan komisi dokter di sini</div>
+                      </div>
+                      <!--
+                      <div class="input-group input-group-dynamic mb-4">
+                        <label class="" for="komisi_dokter">Komisi Dokter</label>
+                        <span class="input-group-text" id="basic-addon1">%</span>
+                        <input type="text" id="komisi_dokter" class="form-control" name="komisi_dokter" aria-label="komisi_dokter" aria-describedby="basic-addon1" required>
+                        <div class="valid-feedback">Good!</div>
+                        <div class="invalid-feedback">Masukkan nama dokter di sini</div>
+                      </div>-->
                       <div class="text-center">
                         <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Simpan</button>
                       </div>
@@ -73,6 +90,7 @@
                         <tr>
                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Kode Dokter</th>
                           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Dokter</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Komisi Dokter</th>
                           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Komisi Sudah Dibayar</th>
                           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Komisi Belum Dibayar</th>
                           <th class="text-secondary opacity-7"></th>
@@ -86,6 +104,9 @@
                           </td>
                           <td class="text-center">
                             <p class="text-xs font-weight-bold mb-0">{{dokter.nama}}</p>
+                          </td>
+                          <td class="text-center">
+                            <p class="text-xs font-weight-bold mb-0">{{dokter.komisi_dokter}} <span> %</span></p> 
                           </td>
                           <td>
                             <p class="text-xs font-weight-bold mb-0"><span>Rp. </span>{{dokter.komisi_sudah_dibayar}}</p>
@@ -112,17 +133,27 @@
                                         <h5 class="">Edit Data Dokter</h5>
                                         <p class="mb-0">Masukkan data dokter baru</p>
                                       </div>
-                                      <div class="card-body">
+                                      <div class="card-body text-left">
                                       <!-- Form mrnambahkan pasien baru-->
-                                        <form role="form text-left" method="POST" action="{% url 'dokter:edit_dokter' id=dokter.kode_dokter %}" id="edit_dokter">
-                                          {% csrf_token %}
-                                          <div class="input-group input-group-static my-3">
-                                            <label class="">Kode Dokter</label>
-                                            <input type="text" class="form-control" name="kode_dokter" value="{{dokter.kode_dokter}}">
+                                        <form class="form text-left was-validated" method="POST" action="{% url 'dokter:edit_dokter' id=dokter.kode_dokter %}" id="edit_dokter">
+                                          {% csrf_token %}  
+                                          <div class=" input-group input-group-outline my-3" style="text-align: left;">
+                                            <!--<label class="" for="editkode{{dokter.kode_dokter}}">Kode Dokter</label>-->
+                                            <input type="text" class="form-control" id="editkode{{dokter.kode_dokter}}" name="kode_dokter" value="{{dokter.kode_dokter}}" disabled required>
+                                            <div class="valid-feedback">Kode dokter berhasil dimasukkan!</div>
+                                            <div class="invalid-feedback">Masukkan kode dokter di sini.</div>
                                           </div>
-                                          <div class="input-group input-group-static my-3">
-                                              <label class="">Nama Dokter</label>
-                                              <input type="text" class="form-control" name="nama_dokter" value="{{dokter.nama}}">
+                                          <div class="input-group input-group-static my-3" style="text-align: left;">
+                                              <!--<label class="" for="editnama{{dokter.kode_dokter}}">Nama Dokter</label>-->
+                                              <input type="text" id="editnama{{dokter.kode_dokter}}" class="form-control" name="nama_dokter" value="{{dokter.nama}}" required>
+                                              <div class="valid-feedback">Nama dokter berhasil dimasukkan!</div>
+                                              <div class="invalid-feedback">Masukkan nama dokter di sini</div>
+                                          </div>
+                                          <div class="input-group input-group-dynamic mb-4" style="text-align: left;">
+                                            <span class="input-group-text" id="basic-addon1">@</span>
+                                            <input type="number" id="editkomisi{{dokter.kode_dokter}}" class="form-control" placeholder="Komisi Dokter" aria-label="komisi_dokter" name="komisi_dokter" value="{{dokter.komisi_dokter}}" aria-describedby="basic-addon1" required>
+                                            <div class="valid-feedback">Komisi berhasil dimasukkan!</div>
+                                            <div class="invalid-feedback">Masukkan komisi dokter di sini</div>
                                           </div>
                                           <div class="text-center">
                                             <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Edit</button>

@@ -18,6 +18,8 @@ from .views import *
 
 app_name= 'nilai_normal'
 urlpatterns = [
-    path('' ,daftar_nilai_normal, name='list'),
-    path('tambah', tambah_nilai_normal, name='tambah'),
+    path('', all_nilai_normal, name='all_nilai_normal'),
+    path('add', add_nilai_normal, name='add_nilai_normal'),
+    path('edit/<str:id>', edit_nilai_normal, name='edit_nilai_normal'),
+    path('delete/<str:id>', delete_nilai_normal, name='delete_nilai_normal')
 ]

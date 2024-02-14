@@ -18,8 +18,8 @@ from .views import *
 
 app_name= 'tester'
 urlpatterns = [
-    path('', all_tester, 'all_tester'),
-    path('add', add_tester, 'add_tester'),
-    path('edit/<str:id>', edit_tester, 'edit_tester'),
-    path('delete/<str:id>', delete_tester, 'delete_tester')
+    path('', all_tester, name='all_tester'),
+    path('add', add_tester, name='add_tester'),
+    path('edit/<str:id>', edit_tester, name='edit_tester'),
+    path('delete/<str:id>', delete_tester, name='delete_tester')
 ]

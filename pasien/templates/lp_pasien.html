@@ -1,0 +1,146 @@
+{% extends 'layout/base.html' %} 
+{% load static %} 
+{% block title %} Pasien {% endblock title %} 
+
+{% block css %}
+
+{% endblock css %}
+
+{% block navbar_link %}
+  Pasien
+{% endblock navbar_link %}
+
+{% block navbar_title %}
+ Daftar Pasien
+{% endblock navbar_title %}
+
+{% block content %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div>
+      <div>
+        <button type="button" class="btn btn-block bg-gradient-info mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-pasien">
+            <i class="material-icons opacity-10">add_circle_outline</i><span> Tambahkan Pasien</span></button>
+      </div>
+      <div>
+        <div class="modal fade" id="modal-form-pasien" tabindex="-1" role="dialog" aria-labelledby="modal-form-pasien" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-m" role="document">
+            <div class="modal-content">
+              <div class="modal-body p-0">
+                <div class="card card-plain">
+                  <div class="card-header pb-0 text-left">
+                    <h5 class="">Tambahkan Pasien Baru</h5>
+                    <p class="mb-0">Masukkan data pasien</p>
+                  </div>
+                  <div class="card-body m-0">
+                  <!-- Form mrnambahkan pasien baru-->
+                    <form class="form text-left was-validated" method="POST" action="{% url 'pasien:add_pasien' %}" id="tambah_pasien">
+                      {% csrf_token %}
+                      <div class="input-group input-group-dynamic mb-4">
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Pasien" required>
+                        <div class="valid-feedback">Pastinakan nama sesuai dengan KTP!</div>
+                        <div class="invalid-feedback">Masukkan nama pasien di sini.</div>
+                      </div>
+                      <div class="input-group input-group-dynamic mb-4">
+                        <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir 'dd/mm/yy'" required>
+                        <div class="valid-feedback">Pastinakan tanggal lahir sesuai dengan KTP!</div>
+                        <div class="invalid-feedback">Masukkan tanggal lahir pasien di sini.</div>
+                      </div>
+                      <div class="">
+                        <div class="form-check mb-3">
+                          <input class="form-check-input" type="radio" name="jenis_kelamin" value="true" id="customRadio1" required> 
+                          <label class="custom-control-label" for="customRadio1">Laki-laki</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="jenis_kelamin" value="false" id="customRadio2" required>
+                          <label class="custom-control-label" for="customRadio2">Perempuan</label>
+                          <div class="invalid-feedback">Pilih jenis kelamin pasien</div>
+                        </div>
+                      </div>
+                      <div class="input-group input-group-dynamic mb-4">
+                        <textarea class="form-control" id="alamat" name="alamat" placeholder="Masukkan alamat pasien . . ." required></textarea>
+                        <div class="valid-feedback">Pastikan alamat paseien sesuai dengan KTP!</div>
+                        <div class="invalid-feedback">Masukkan alamat pasien di sini.</div>
+                      </div>
+                      <div class="text-center">
+                      <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Simpan</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="row">
+            <div class="col-12">
+              <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                  <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                    <h6 class="text-white text-capitalize ps-3">Daftar Pasien</h6>
+                  </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    {% if flag_null %}
+                    <div class="h5 text-center">
+                        Tidak ada data pasien untuk saat ini.
+                    </div>
+                    {% else %}
+                  <div class="table-responsive p-0">
+                    <table id="pasienTable" class="table align-items-center mb-0 table-paginate" cellspacing="0">
+                      <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kode</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tanggal Lahir</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jenis Kelamin</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alamat</th>
+                            <th class="text-secondary opacity-7"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for person in data_pasien %}
+                            <tr>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">{{person.uid}}</p>
+                                  </td>
+                              <td>
+                                <div class="d-flex px-2 py-1">
+                                  <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold mb-0">{{person.nama}}</h6>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <p class="text-xs font-weight-bold mb-0">{{person.tanggal_lahir}}</p>
+                              </td>
+                              {% if person.jenis_kelamin %}
+                              <td class="align-middle text-center">
+                                <p class="text-xs font-weight-bold mb-0">Laki-laki</p>
+                              </td>
+                              {% else %}
+                              <td class="align-middle text-center">
+                                <p class="text-xs font-weight-bold mb-0">Perempuan</p>
+                              </td>
+                              {% endif %}
+                              <td class="align-middle text-center">
+                                <p class="text-xs font-weight-bold mb-0">{{person.alamat}}</p>
+                              </td>
+                              <td class="align-middle text-center">
+                                <a href="{% url 'pasien:view_pasien' id=person.uid %}" class="btn btn-info font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                  lihat
+                                </a>
+                              </td>
+                            </tr>
+                            
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+{% endblock content %}

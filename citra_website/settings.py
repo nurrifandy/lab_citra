@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'dokter',
     'uji_lab',
     'tester',
-    'pemeriksaan'
+    'pemeriksaan',
+    'bidang',
+    'hasil_pemeriksaan'
 ]
 
 MIDDLEWARE = [

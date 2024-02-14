@@ -1,5 +1,5 @@
 <!--Side Navbar-->
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3  bg-gradient-dark" id="sidenav-main">
 
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -36,12 +36,23 @@
       <span class="nav-link-text ms-1">Pemeriksaan</span>
     </a>
   </li>
-  
+
   <li class="nav-item">
-    <a class="nav-link text-white " href="{% url 'nilai_normal:list' %}">
+    <a class="nav-link text-white " href="{% url 'uji_lab:all_uji_lab' %}">
       
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">science</i>
+        </div>
+      
+      <span class="nav-link-text ms-1">Uji Laboratorium</span>
+    </a>
+  </li>
+  
+  <li class="nav-item">
+    <a class="nav-link text-white " href="{% url 'nilai_normal:all_nilai_normal' %}">
+      
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">lightbulb_circle</i>
         </div>
       
       <span class="nav-link-text ms-1">Nilai Normal</span>
@@ -62,13 +73,24 @@
   
     
   <li class="nav-item">
-    <a class="nav-link text-white " href="{% url 'dokter:all_dokter' %}">
+    <a class="nav-link text-white " href="{% url 'tester:all_tester' %}">
       
         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
           <i class="material-icons opacity-10">supervised_user_circle</i>
         </div>
       
       <span class="nav-link-text ms-1">Tester</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link text-white " href="{% url 'bidang:all_bidang' %}">
+      
+        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+          <i class="material-icons opacity-10">view_module</i>
+        </div>
+      
+      <span class="nav-link-text ms-1">Bidang</span>
     </a>
   </li>
   
@@ -110,11 +132,11 @@
       
       <span class="nav-link-text ms-1">Sign Up</span>
     </a>
-  </li>
+  </li>-->
         
       </ul>
     </div>
-    -->
+    
     
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
