@@ -1,0 +1,343 @@
+{% extends 'layout/base.html' %} 
+{% load static %} 
+{% block title %} Profil {% endblock title %} 
+
+{% block css %}
+
+{% endblock css %}
+
+{% block navbar_link %}
+  Profil
+{% endblock navbar_link %}
+
+{% block navbar_title %}
+ Profil Pasien
+{% endblock navbar_title %}
+
+{% block content %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div>
+        <div class="container-fluid px-2 px-md-4">
+            <div class="page-header min-height-100 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+              <span class="mask  bg-gradient-primary  opacity-6"></span>
+            </div>
+            <div class="card card-body mx-3 mx-md-4 mt-n6">
+              <div class="row gx-4 mb-2">
+                <div class="col-auto">
+                  <div class="avatar avatar-xl position-relative">
+                    <img src="{% static 'img/person.jpg' %}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                  </div>
+                </div>
+                <div class="col-auto my-auto">
+                  <div class="h-100">
+                    <h5 class="mb-1">
+                      {{person.nama}}
+                    </h5>
+                    <p class="mb-0 font-weight-normal text-sm">
+                      {{person.tanggal_mendaftar}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+                <div class="row">
+                  <div class="col-12 col-xl-4">
+                    <div class="card card-plain h-100">
+                      <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Data Diri</h6>
+                      </div>
+                      <div class="card-body p-3">
+                        <hr class="horizontal gray-light my-2">
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Tanggal Lahir  :</strong> &nbsp; {{person.tanggal_lahir}}</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Umur  :</strong> &nbsp; {{person.umur}} tahun</li>
+                            <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">No. Hp  :</strong> &nbsp; (62) 889 8987 9737</li>
+                          </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-xl-4">
+                    <div class="card card-plain h-100">
+                      <div class="card-header pb-0 p-3">
+                        <div class="row">
+                          <div class="col-md-8 d-flex align-items-center">
+                            <h6 class="mb-0">Alamat Lengkap</h6>
+                          </div>
+                          
+                          <div class="col-md-4 text-end">
+                            <a href="javascript:;">
+                              <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body p-3">
+                        <hr class="horizontal gray-light my-2">
+                        <p class="text-sm">
+                          {{person.alamat}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  <div class="row">
+                    
+                    <div class="mb-1 col-xl-6 ps-3">
+                      <h6 class="mb-1">Daftar Pemeriksaan</h6>
+                      <p class="text-sm">Daftar pemeriksaan pasien di lab citra.</p>
+                      
+                    </div>
+                    <div class=" col-xl-6 d-flex justify-content-end">
+                        
+                          <div>
+                            <button type="button" class="btn btn-block bg-gradient-info mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-pasien">
+                                <i class="material-icons opacity-10">post_add</i><span> Tambah Pemeriksaan</span></button>
+                          </div>
+                          <div>
+                            <div class="modal fade" id="modal-form-pasien" tabindex="-1" role="dialog" aria-labelledby="modal-form-pasien" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered modal-m" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-body p-0">
+                                    <div class="card card-plain">
+                                      <div class="card-header pb-0 text-left">
+                                        <h5 class="">Tambahkan Pemeriksaan Baru</h5>
+                                        <p class="mb-0">Masukkan data pemeriksaan</p>
+                                      </div>
+                                      <div class="card-body m-0">
+                                      <!-- Form mrnambahkan pasien baru-->
+                                        <form class="form text-left was-validated" method="POST" action="{% url 'pemeriksaan:add_pemeriksaan' %}" id="tambah_pemeriksaan">
+                                          {% csrf_token %}
+                                          <div class=" input-group input-group-outline" style="text-align: left;">
+                                            <!--<label class="" for="editkode{{dokter.kode_dokter}}">Kode Dokter</label>-->
+                                            <input type="hidden" class="form-control" id="editkode{{person.kode_dokter}}" name="uid" value="{{person.uid}}" required>
+                                          </div>
+                                          <div class=" input-group input-group-outline my-3" style="text-align: left;">
+                                            <!--<label class="" for="editkode{{dokter.kode_dokter}}">Kode Dokter</label>-->
+                                            <input type="text" class="form-control" id="editkode{{person.kode_dokter}}" name="nama" value="{{person.nama}}" disabled required>
+                                            <div class="valid-feedback">Kode dokter berhasil dimasukkan!</div>
+                                            <div class="invalid-feedback">Masukkan kode dokter di sini.</div>
+                                          </div>
+                                          <div class="input-group input-group-static my-3">
+                                            <select class="form-control" id="bidang" onchange="ChangeLabList()" name="id_bidang" required >
+                                                <option value="">-- pilih bidang --</option>
+                                                {% for tmp in bidang %}
+                                                <option value="{{tmp.uid}}" > {{tmp.nama}}</option>
+                                                {% endfor %}
+                                              </select>
+                                              <div class="valid-feedback">Nama bidang pemeriksaan berhasil di pilih.</div>
+                                              <div class="invalid-feedback">Pilih nama bidang pemeriksaan yang sesuai.</div>
+                                          </div>
+                                          <div class="input-group input-group-static my-3">
+                                            <select class="form-control" id="dokter" name="id_dokter" >
+                                                <option value="">-- pilih dokter --</option>
+                                                {% for tmp in dokter %}
+                                                <option value="{{tmp.kode_dokter}}" > {{tmp.nama}}</option>
+                                                {% endfor %}
+                                              </select>
+                                              <div class="valid-feedback">Nama dokter bersifat optional.</div>
+                                          </div>
+                                          <div class="input-group input-group-static my-3">
+                                            <select class="form-control" id="pemeriksaan" name="id_tester" required >
+                                                <option value="">-- pilih pemeriksa --</option>
+                                                {% for tmp in tester %}
+                                                <option value="{{tmp.kode}}"> {{tmp.nama}}</option>
+                                                {% endfor %}
+                                              </select>
+                                              <div class="valid-feedback">Nama pemeriksaa berhasil di pilih.</div>
+                                              <div class="invalid-feedback">Pilih nama pemeriksaa yang sesuai.</div>
+                                          </div>
+                                          
+                                          <div class="input-group input-group-dynamic mb-4">
+                                            <textarea class="form-control" id="diagnosa" name="diagnosa" placeholder="Masukkan diagnosa awal pasien . . ." required></textarea>
+                                            <div class="valid-feedback">Diagnosa dimasukkan!</div>
+                                            <div class="invalid-feedback">Masukkan diagnosa pasien di sini.</div>
+                                          </div>
+                                          <div class="h6" id="list">
+                                            Pilih Tes Uji Laboratorium
+                                            <div class="p">uji tes yang telah di pilih berikutnya tidak dapat dirubah ketika di simpan</div>
+                                          </div>
+                                         
+                                          <div class="form-check" id="parent">
+                                            
+                                          </div>
+                                          
+                                          <div class="text-center">
+                                          <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Simpan</button>
+                                          </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                  </div>
+
+                    <div class="row">
+                        <div class="card my-4 m-3">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 mb-3">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                                  <h6 class="text-white text-capitalize ps-3">Daftar Pemeriksaan</h6>
+                                </div>
+                            </div>
+                            {% if flag_null %}
+                            <div class="h5 text-center m-2">
+                                Pasien belum pernah melakukan pemeriksaan.
+                            </div>
+                            {% else %}
+                            <div class="table-responsive">
+                              <table class="table align-items-center mb-0">
+                                <thead>
+                                  <tr class="text-center">
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Kode</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Bidang</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Tanggal Pemeriksaan</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Status</th>
+                                    <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">Total Biaya</th>
+                                    <th class="text-secondary opacity-7"></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {% for data in datas %}
+                                  <tr class="text-center">
+                                    
+                                    <td>
+                                      <p class="text-xs font-weight-bold mb-0">{{data.pid}}</p>
+                                    </td>
+                                    <td>
+                                      <p class="text-xs font-weight-bold mb-0">{{data.id_bidang}}</p>
+                                    </td>
+                                    <td>
+                                      <p class="text-xs font-weight-bold mb-0">{{data.tanggal_pemeriksaan}}</p>
+                                    </td>
+                                    <td>
+                                      <p class="text-xs font-weight-bold mb-0">{{data.status}}</p>
+                                    </td>
+                                    <td>
+                                      <p class="text-xs font-weight-bold mb-0"><span>Rp.</span>{{data.total_biaya}}</p>
+                                    </td>
+                                    
+                                    <td class="align-middle">
+                                      <a href="{% url 'pemeriksaan:view_pemeriksaan' id=data.pid %}" class="btn btn-block bg-gradient-secondary mb-3" data-toggle="tooltip" data-original-title="Edit user">
+                                        Lihat Pemeriksaan
+                                      </a>
+                                    </td>
+                                    
+                                  </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                            {% endif %}
+                          </div>
+                    </div>
+                  
+                </div>
+            </div>
+            
+    </div>
+    <script type="text/javascript">
+        var pemeriksaan = {};
+        var bidang = JSON.parse("{{count|escapejs}}");
+        for (var i=0; i<bidang.length;i++){
+          if (i == 0){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG1|escapejs}}");
+          }else if (i == 1){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG2|escapejs}}");
+          }else if (i == 2){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG3|escapejs}}");
+          }else if (i == 3){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG4|escapejs}}");
+          }else if (i == 4){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG5|escapejs}}");
+          }else if (i == 5){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG6|escapejs}}");
+          }else if (i == 6){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG7|escapejs}}");
+          }else if (i == 7){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG8|escapejs}}");
+          }else if (i == 8){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG9|escapejs}}");
+          }else if (i == 9){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG10|escapejs}}");
+          }else if (i == 10){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG11|escapejs}}");
+          }else if (i == 11){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG12|escapejs}}");
+          }else if (i == 12){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG13|escapejs}}");
+          }else if (i == 13){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG14|escapejs}}");
+          }else if (i == 14){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG15|escapejs}}");
+          }else if (i == 15){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG16|escapejs}}");
+          }else if (i == 16){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG17|escapejs}}");
+          }else if (i == 17){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG18|escapejs}}");
+          }else if (i == 18){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG19|escapejs}}");
+          }else if (i == 19){
+            pemeriksaan[String(bidang[i].fields.uid)] = JSON.parse("{{BDG20|escapejs}}");
+          }
+        }
+
+      function ChangeLabList() {
+        var bidangList = document.getElementById("bidang");
+        var myDiv = document.getElementById("parent");
+        var tmpIn = myDiv.getElementsByTagName("input");
+        var tmpLbl = document.getElementsByTagName("label");
+        var selLab = bidangList.options[bidangList.selectedIndex].value;
+        
+        let child = myDiv.lastElementChild;
+        
+        while (child) {
+          myDiv.removeChild(child);
+            child = myDiv.lastElementChild;
+        }
+        
+
+        var labs = pemeriksaan[selLab];
+        
+        if (labs) {
+          var i;
+          for (i = 0; i < labs.length; i++) {
+            // creating checkbox element
+            var checkbox = document.createElement('input');
+             
+            // Assigning the attributes
+            // to created checkbox
+            checkbox.classList = "form-check-input"
+            checkbox.type = "checkbox";
+            checkbox.name = "uji_lab";
+            checkbox.value = labs[i].fields.uid;
+            checkbox.id = labs[i].fields.nama;
+             
+            // creating label for checkbox
+            var label = document.createElement('label');
+             
+            // assigning attributes for 
+            // the created label tag 
+            label.htmlFor = labs[i].fields.nama;
+            label.classList = "custom-control-label"
+             
+            // appending the created text to 
+            // the created label tag 
+            label.appendChild(document.createTextNode(labs[i].fields.nama));
+             
+            // appending the checkbox
+            // and label to div
+            myDiv.appendChild(checkbox);
+            myDiv.appendChild(label);
+            var br = document.createElement("br");
+            myDiv.appendChild(br);
+          }
+        }
+      }
+
+      
+    </script>
+{% endblock content %}

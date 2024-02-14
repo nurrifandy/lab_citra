@@ -19,7 +19,7 @@ from .views import *
 app_name= 'pemeriksaan'
 urlpatterns = [
     path('', all_pemeriksaan, name='all_pemeriksaan'),
-    path('add/<str:id>', add_pemeriksaan, name='add_pemeriksaan'),
+    path('add/', add_pemeriksaan, name='add_pemeriksaan'),
     path('edit/<str:id>', edit_pemeriksaan, name='edit_pemeriksaan'),
     path('delete/<str:id>', delete_pemeriksaan, name='delete_pemeriksaan'),
     path('view/<str:id>', view_pemeriksaan, name='view_pemeriksaan'),

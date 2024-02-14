@@ -9,3 +9,4 @@ class Pasien(models.Model):
     jenis_kelamin = models.BooleanField()
     alamat = models.CharField(max_length=250)
     tanggal_mendaftar = models.DateField()
+    diagnosa_awal = models.CharField(max_length=250)

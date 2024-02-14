@@ -1,0 +1,203 @@
+{% extends 'layout/base.html' %} 
+{% load static %} 
+{% block title %} Nilai Normal {% endblock title %} 
+
+{% block css %}
+
+{% endblock css %}
+
+{% block navbar_link %}
+  Uji Lab
+{% endblock navbar_link %}
+
+{% block navbar_title %}
+ Daftar Uji Lab
+{% endblock navbar_title %}
+
+{% block content %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div>
+      <div>
+        <button type="button" class="btn btn-block bg-gradient-info mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-nilai-normal">
+            <i class="material-icons opacity-10">add_circle_outline</i><span> Tambahkan Uji Lab</span></button>
+      </div>
+      <div>
+        <div class="modal fade" id="modal-form-nilai-normal" tabindex="-1" role="dialog" aria-labelledby="modal-form-nilai-normal" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-m" role="document">
+            <div class="modal-content">
+              <div class="modal-body p-0">
+                <div class="card card-plain">
+                  <div class="card-header pb-0 text-left">
+                    <h5 class="">Tambahkan Uji Lab Baru</h5>
+                    <p class="mb-0">Masukkan data uji lab</p>
+                  </div>
+                  <div class="card-body m-0">
+                  <!-- Form mrnambahkan pasien baru-->
+                    <form class="form text-left was-validated" method="POST" action="{% url 'uji_lab:add_uji_lab' %}" id="tambah_uji_lab">
+                      {% csrf_token %}
+                      <div class="input-group input-group-dynamic mb-4">
+                        <input type="text" class="form-control" placeholder="Nama pemeriksaan" id="nama" name="nama" required>
+                        <div class="valid-feedback">Nama pemeriksaan sesuai!</div>
+                        <div class="invalid-feedback">Masukkan nama pemeriksaan di sini.</div>
+                      </div>
+                      <div class="input-group input-group-static my-3">
+                        <input type="text" class="form-control" placeholder="Satuan pemeriksaan" id="satuan" name="satuan" required>
+                        <div class="valid-feedback" >Satuan pemeriksaan telah sesuai!</div>
+                        <div class="invalid-feedback">Masukkan satuan pemeriksaan di sini.</div>
+                      </div>
+                      <div class="input-group input-group-static my-3">
+                        <select class="form-control" id="exampleFormControlSelect1" name="id_bidang" required >
+                            <option value="">-- pilih nama bidang --</option>
+                            {% for tmp in bidangs %}
+                            <option value="{{tmp.uid}}" > {{tmp.nama}}</option>
+                            {% endfor %}
+                          </select>
+                          <div class="valid-feedback">Nama bidang berhasil di pilih.</div>
+                          <div class="invalid-feedback">Piliha nama bidang yang sesuai.</div>
+                      </div>
+                      <div class="input-group input-group-dynamic mb-4">
+                        <span class="input-group-text" id="basic-addon3">Rp</span>
+                        <input type="number" class="form-control" placeholder="Harga pemeriksaan" name="harga" aria-label="Username" aria-describedby="basic-addon3" required>
+                        <div class="valid-feedback">Harga berhasil dimasukkan</div>
+                        <div class="invalid-feedback">Masukkan harga untuk pemeriksaan ini.</div>
+                    </div>
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Simpan</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="row">
+            <div class="col-12">
+              <div class="card my-4">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                  <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                    <h6 class="text-white text-capitalize ps-3">Daftar Uji Lab</h6>
+                  </div>
+                </div>
+                <div class="card-body px-0 pb-2">
+                    {% if flag_null %}
+                    <div class="h5 text-center">
+                        Tidak ada data uji lab untuk saat ini.
+                    </div>
+                    {% else %}
+                  <div class="table-responsive p-0">
+                    <table id="pasienTable" class="table align-items-center mb-0 table-paginate" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Kode Uji Lab</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Uji Lab</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Satuan</th>
+                          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Bidang</th>
+                          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Harga</th>
+                          <th class="text-secondary opacity-7"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for data in labs %}
+                        <tr class="text-center">
+                          <td class="text-center">
+                            <p class="text-xs font-weight-bold mb-0">{{data.uid}}</p>
+                          </td>
+                          <td class="text-center">
+                            <p class="text-xs font-weight-bold mb-0">{{data.nama}}</p>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0">{{data.satuan}}</p>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0">
+                                {% for tmp in bidangs %}
+                                {% if tmp.uid == data.id_bidang %}
+                                    {{tmp.nama}}
+                                {% endif %}
+                                {% endfor %}
+                                </p>
+                          </td>
+                          <td>
+                            <p class="text-xs font-weight-bold mb-0">{{data.harga}}</p>
+                          </td>
+                          <td class="align-middle text-center">
+                            
+                            <div>
+                              <button type="button" class="btn btn-block bg-gradient-secondary mb-3" data-bs-toggle="modal" data-bs-target="#modal-edit-{{data.uid}}">
+                                  <i class="material-icons opacity-10">edit</i><span> edit</span></button>
+                            </div>
+                            <!-- Modal untuk Edit-->
+                            <div class="modal fade" id="modal-edit-{{data.uid}}" tabindex="-1" role="dialog" aria-labelledby="modal-edit-{{data.uid}}" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered modal-m" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-body p-0">
+                                    <div class="card card-plain">
+                                      <div class="card-header pb-0 text-left">
+                                        <h5 class="">Edit Data Uji Lab</h5>
+                                        <p class="mb-0">Masukkan data uji lab baru</p>
+                                      </div>
+                                      <div class="card-body">
+                                      <!-- Form mrnambahkan pasien baru-->
+                                        <form class="form text-left was-validated" method="POST" action="{% url 'uji_lab:edit_uji_lab' id=data.uid %}" id="edit_tester">
+                                          {% csrf_token %}  
+                                          <div class=" input-group input-group-outline my-3" style="text-align: left;">
+                                            <input type="text" class="form-control" id="editkode{{data.uid}}" name="uid" value="{{data.uid}}" required disabled>
+                                            <div class="valid-feedback" >Good!</div>
+                                            <div class="invalid-feedback">Tolong isi bagian ini.</div>
+                                          </div>
+
+                                          <div class="input-group input-group-static my-3" style="text-align: left;">
+                                              <input type="text" id="editnama{{data.uid}}" class="form-control" name="nama" value="{{data.nama}}" required>
+                                              <div class="valid-feedback">Nama pemeriksaan telah sesuai.</div>
+                                              <div class="invalid-feedback">Masukkan nama pemeriksaan pada bagian ini.</div>
+                                          </div>
+                                          <div class="input-group input-group-static my-3" style="text-align: left;">
+                                            <input type="text" id="editsatuan{{data.uid}}" class="form-control" name="satuan" value="{{data.satuan}}" required>
+                                            <div class="valid-feedback">Satuan pemeriksaan telah sesuai!</div>
+                                            <div class="invalid-feedback">Masukkan satuan pemeriksaan di sini.</div>
+                                          </div>
+                                          <div class="input-group input-group-static my-3" style="text-align: left;">
+                                            <select class="form-control" id="editbidang{{data.uid}}" name="id_bidang" required>
+                                                {% for tmp in bidangs %}
+                                                {% if tmp.uid == data.id_bidang %}
+                                                <option value="{{tmp.uid}}" selected="true"> {{tmp.nama}}</option>
+                                                {% else %}
+                                                <option value="{{tmp.uid}}"> {{tmp.nama}}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                              </select>
+                                              <div class="valid-feedback">Nama bidang berhasil di pilih.</div>
+                                              <div class="invalid-feedback">Piliha nama bidang yang sesuai.</div>
+                                          </div>
+                                          <div class="input-group input-group-dynamic mb-4" style="text-align: left;">
+                                            <span class="input-group-text" id="basic-addon4">Rp.</span>
+                                            <input type="text" id="editharga{{data.uid}}" class="form-control" name="harga" value="{{data.harga}}" aria-describedby="basic-addon4" required>
+                                            <div class="valid-feedback">Harga berhasil dimasukkan</div>
+                                            <div class="invalid-feedback">Masukkan harga untuk pemeriksaan ini.</div>
+                                        </div>
+                                        
+                                          <div class="text-center">
+                                            <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Edit</button>
+                                          </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+{% endblock content %}

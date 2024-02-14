@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class UjiLab(models.Model):
     uid = models.CharField(max_length=100)
-    users = models.CharField(max_length=50)
-    diagnosa_awal = models.CharField(max_length=250)
-    tanggal_pemeriksaan = models.DateField()
-    testers = models.CharField(max_length=50)
+    nama = models.CharField(max_length=100)
+    satuan = models.CharField(max_length=250)
+    id_bidang = models.CharField(max_length=100)
+    harga = models.IntegerField(default=0)
